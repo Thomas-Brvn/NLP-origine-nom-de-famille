@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Méthodologie — Origine des noms</title>
+  <link rel="stylesheet" href="/static/style.css" />
+  <link rel="stylesheet" href="/static/methode.css" />
+</head>
+<body>
+
+  <main>
+    <header>
+      <div class="header-rule"></div>
+      <h1>Méthodologie</h1>
+      <p class="subtitle">Démarche, méthodes NLP testées et résultats.</p>
+      <a href="/" class="back-link">← Retour à la recherche</a>
+    </header>
+
+    <!-- 1. Problème -->
+    <section class="m-section">
+      <h2>Le problème</h2>
+      <p>
+        Les noms de famille français sont le fruit de siècles d'évolution : un même nom ancestral
+        a engendré des dizaines de formes locales, dialectales et orthographiques. <em>Lefebvre</em>,
+        <em>Lefebre</em>, <em>Lefaivre</em> ou <em>Le Febvre</em> désignent la même origine — le forgeron —
+        mais n'ont jamais été unifiés. La base contient 21 777 entrées ; le défi est de relier
+        chaque variante à sa <strong>racine commune</strong> pour en restituer la signification.
+      </p>
+      <div class="example-grid">
+        <div class="example-card">
+          <p class="ex-label">Orthographique</p>
+          <p class="ex-text">Lefebre → <span class="ex-target">Lefebvre</span></p>
+        </div>
+        <div class="example-card">
+          <p class="ex-label">Particule</p>
+          <p class="ex-text">Le Febre → <span class="ex-target">Lefebvre</span></p>
+        </div>
+        <div class="example-card">
+          <p class="ex-label">Faute de frappe</p>
+          <p class="ex-text">Dupond → <span class="ex-target">Dupont</span></p>
+        </div>
+        <div class="example-card">
+          <p class="ex-label">Phonétique FR</p>
+          <p class="ex-text">Lefaivre → <span class="ex-target">Lefebvre</span></p>
+        </div>
+        <div class="example-card">
+          <p class="ex-label">Doublement</p>
+          <p class="ex-text">Pottier → <span class="ex-target">Potier</span></p>
+        </div>
+        <div class="example-card">
+          <p class="ex-label">Régionale</p>
+          <p class="ex-text">Bideaud → <span class="ex-target">Bideault</span></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Données -->
+    <section class="m-section">
+      <h2>Les données</h2>
+      <table class="m-table">
+        <thead>
+          <tr><th>Source</th><th>Contenu</th><th>Volume</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>names.json</td><td>Noms de famille → IDs d'origines</td><td>21 777 entrées</td></tr>
+          <tr><td>origins.json</td><td>Textes étymologiques détaillés (FR)</td><td>20 981 textes</td></tr>
+          <tr><td>prenoms.json</td><td>Prénoms → IDs d'origines</td><td>1 769 entrées</td></tr>
+          <tr><td>origins_prenoms_fr.json</td><td>Textes d'origines traduits EN→FR via Google Translate</td><td>1 769 textes</td></tr>
+          <tr><td>prenoms_insee.json</td><td>Fréquence des prénoms (INSEE nat2021)</td><td>34 176 prénoms</td></tr>
+          <tr><td>noms_insee.json</td><td>Fréquence des noms de famille (INSEE 2008)</td><td>218 982 noms</td></tr>
+        </tbody>
+      </table>
+      <p class="m-note">
+        La couverture est partielle : les noms absents de la base sont la norme, pas l'exception.
+        Certains noms très courants (<em>Dubois, Fontaine</em>) n'y figurent pas sous leur forme canonique.
+      </p>
+    </section>
+
+    <!-- 3. Normalisation -->
+    <section class="m-section">
+      <h2>Normalisation</h2>
+      <p>Étape préalable à toute comparaison — souvent sous-estimée mais décisive :</p>
+      <ol class="m-steps">
+        <li><strong>Minuscule + NFD</strong> — suppression des accents (é→e, ç→c)</li>
+        <li><strong>Tirets et apostrophes</strong> → espaces unifiés</li>
+        <li><strong>Agglutination des particules</strong> — le/du/de/la/des supprimés en tête</li>
+        <li><strong>Fusion</strong> — les tokens restants sont concaténés sans espace</li>
+      </ol>
+      <div class="pipeline-viz">
+        <span class="pv-step">Le Febvre</span>
+        <span class="pv-arrow">→</span>
+        <span class="pv-step">le febvre</span>
+        <span class="pv-arrow">→</span>
+        <span class="pv-step">le febvre</span>
+        <span class="pv-arrow">→</span>
+        <span class="pv-step pv-final">febvre</span>
+      </div>
+      <p class="m-note">Sans cette étape, "Le Febvre" ne matche jamais "lefebvre" dans la base.</p>
+    </section>
+
+    <!-- 4. Méthodes testées -->
+    <section class="m-section">
+      <h2>Méthodes testées</h2>
+
+      <div class="method-grid">
+        <div class="method-card method-kept">
+          <p class="method-status">Retenu</p>
+          <p class="method-name">Levenshtein</p>
+          <p class="method-desc">Distance d'édition minimale entre deux chaînes (insertions, suppressions, substitutions). Efficace sur les fautes de frappe et substitutions de caractères.</p>
+        </div>
+        <div class="method-card method-kept">
+          <p class="method-status">Retenu</p>
+          <p class="method-name">TF-IDF char n-grammes</p>
+          <p class="method-desc">Vectorisation par bigrammes et trigrammes de caractères. Capture les séquences communes entre variantes orthographiques. Rapide (3 ms/requête).</p>
+        </div>
+        <div class="method-card method-best">
+          <p class="method-status">Pipeline final</p>
+          <p class="method-name">Hybride Lev + TF-IDF</p>
+          <p class="method-desc">Fusion par rang : chaque méthode donne des points par proposition. La proposition avec le plus de points est retenue.</p>
+        </div>
+        <div class="method-card method-dropped">
+          <p class="method-status">Éliminée</p>
+          <p class="method-name">Double Metaphone</p>
+          <p class="method-desc">Algorithme phonétique conçu pour l'anglais. Performance insuffisante sur les noms français rares (P@5 = 76,7 %).</p>
+        </div>
+<div class="method-card method-dropped">
+          <p class="method-status">Éliminée</p>
+          <p class="method-name">LLM seul</p>
+          <p class="method-desc">Hallucinations sur les noms rares. Non ancré dans les données. Peut inventer une étymologie plausible mais fausse.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Benchmarks -->
+    <section class="m-section">
+      <h2>Benchmarks</h2>
+
+      <h3>Lire un P@k</h3>
+      <p>P@k = la bonne réponse est-elle dans les <em>k</em> premiers résultats ? Exemple avec la requête <strong>« Dupond »</strong> :</p>
+      <table class="m-table">
+        <thead>
+          <tr><th>Rang</th><th>Résultat retourné</th><th>Correct ?</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>Dumont</td><td>✗</td></tr>
+          <tr><td>2</td><td>Durand</td><td>✗</td></tr>
+          <tr class="row-best"><td>3</td><td>Dupont</td><td>✓</td></tr>
+          <tr><td>4</td><td>Dupois</td><td>✗</td></tr>
+          <tr><td>5</td><td>Dupond</td><td>✗</td></tr>
+        </tbody>
+      </table>
+      <p class="m-note">→ P@1 = 0, P@3 = 1, P@5 = 1. On moyenne ce score sur les 300 cas du benchmark.</p>
+
+      <h3>Benchmark — 300 cas aléatoires</h3>
+      <p class="m-note">6 types de perturbations × 50 noms tirés aléatoirement. Plus représentatif.</p>
+      <table class="m-table">
+        <thead>
+          <tr><th>Méthode</th><th>P@1</th><th>P@3</th><th>P@5</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Lookup exact</td><td>16,7 %</td><td>16,7 %</td><td>16,7 %</td></tr>
+          <tr><td>Levenshtein</td><td>67,7 %</td><td>84,7 %</td><td>91,0 %</td></tr>
+          <tr><td>Double Metaphone</td><td>66,7 %</td><td>75,3 %</td><td>76,7 %</td></tr>
+          <tr><td>N-grammes TF-IDF</td><td>66,3 %</td><td>81,0 %</td><td>87,0 %</td></tr>
+          <tr class="row-best"><td>Hybride Lev+TF-IDF</td><td>72,3 %</td><td>89,7 %</td><td>93,7 %</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Résultats par type de perturbation (P@5, hybride)</h3>
+      <div class="bar-chart">
+        <div class="bar-row"><span class="bar-label">Particule</span><div class="bar-track"><div class="bar-fill" style="width:100%">100 %</div></div></div>
+        <div class="bar-row"><span class="bar-label">Doublement consonne</span><div class="bar-track"><div class="bar-fill" style="width:100%">100 %</div></div></div>
+        <div class="bar-row"><span class="bar-label">Substitution</span><div class="bar-track"><div class="bar-fill" style="width:98%">98 %</div></div></div>
+        <div class="bar-row"><span class="bar-label">Suppression</span><div class="bar-track"><div class="bar-fill" style="width:96%">96 %</div></div></div>
+        <div class="bar-row"><span class="bar-label">Phonétique FR</span><div class="bar-track"><div class="bar-fill" style="width:90%">90 %</div></div></div>
+        <div class="bar-row"><span class="bar-label">Inversion</span><div class="bar-track"><div class="bar-fill bar-weak" style="width:78%">78 %</div></div></div>
+      </div>
+      <p class="m-note">L'inversion de caractères adjacents reste le cas le plus difficile pour toutes les méthodes.</p>
+    </section>
+
+    <!-- 6. Pipeline -->
+    <section class="m-section">
+      <h2>Pipeline final</h2>
+      <div class="pipeline-steps">
+        <div class="ps-step">
+          <div class="ps-num">1</div>
+          <div class="ps-body">
+            <p class="ps-title">Normalisation</p>
+            <p class="ps-desc">Minuscule, sans accents, agglutination des particules</p>
+          </div>
+        </div>
+        <div class="ps-arrow">↓</div>
+        <div class="ps-step">
+          <div class="ps-num">2</div>
+          <div class="ps-body">
+            <p class="ps-title">Lookup exact</p>
+            <p class="ps-desc">Correspondance directe dans la base normalisée — score 1,0</p>
+          </div>
+        </div>
+        <div class="ps-arrow">↓ si aucun résultat</div>
+        <div class="ps-step">
+          <div class="ps-num">3</div>
+          <div class="ps-body">
+            <p class="ps-title">TF-IDF char n-grammes (2,3)</p>
+            <p class="ps-desc">Top-5 candidats par similarité cosinus</p>
+          </div>
+        </div>
+        <div class="ps-step ps-parallel">
+          <div class="ps-num">4</div>
+          <div class="ps-body">
+            <p class="ps-title">Levenshtein</p>
+            <p class="ps-desc">Top-5 candidats par distance d'édition minimale</p>
+          </div>
+        </div>
+        <div class="ps-arrow">↓ fusion</div>
+        <div class="ps-step ps-final">
+          <div class="ps-num">5</div>
+          <div class="ps-body">
+            <p class="ps-title">Fusion par rang</p>
+            <p class="ps-desc">Score = Σ (k − rang) par méthode · normalisé [0, 1] par 2k</p>
+          </div>
+        </div>
+        <div class="ps-arrow">↓</div>
+        <div class="ps-step">
+          <div class="ps-num">6</div>
+          <div class="ps-body">
+            <p class="ps-title">Résumé Mistral</p>
+            <p class="ps-desc">Le texte d'origine est synthétisé et homogénéisé par un LLM</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Enrichissements -->
+    <section class="m-section">
+      <h2>Enrichissements</h2>
+      <div class="enrich-grid">
+        <div class="enrich-card">
+          <p class="enrich-title">Famille linguistique</p>
+          <p class="enrich-desc">Détection par règles regex sur le texte d'origine (latin, germanique, breton, basque…)</p>
+        </div>
+        <div class="enrich-card">
+          <p class="enrich-title">Variantes orthographiques</p>
+          <p class="enrich-desc">Extraction par regex des sections "Variantes :", "Formes voisines :" dans les textes</p>
+        </div>
+<div class="enrich-card">
+          <p class="enrich-title">Résolution de renvois</p>
+          <p class="enrich-desc">"Forme française d'Alfonso" → récupère la définition complète d'Alfonso (1 niveau)</p>
+        </div>
+        <div class="enrich-card">
+          <p class="enrich-title">Popularité INSEE</p>
+          <p class="enrich-desc">Rang et nombre de porteurs, sur 34 176 prénoms et 218 982 noms de famille</p>
+        </div>
+        <div class="enrich-card">
+          <p class="enrich-title">Résumé Mistral</p>
+          <p class="enrich-desc">Synthèse fluide du texte brut via mistral-small-latest · appel async en parallèle</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. Limites -->
+    <section class="m-section">
+      <h2>Limites</h2>
+      <ul class="m-list">
+        <li>Le benchmark aléatoire simule des perturbations — il ne reflète pas exactement les saisies réelles des utilisateurs.</li>
+        <li>Les variations morphologiques historiques (<em>Morot → Moreau</em>) ne sont pas gérées : aucune méthode n'y arrive sans connaissance linguistique externe.</li>
+        <li>L'inversion de deux caractères adjacents reste le cas le plus difficile (P@5 = 78 %).</li>
+        <li>La couverture des prénoms est limitée (1 769) comparée aux noms de famille (21 777).</li>
+        <li>Le résumé Mistral ajoute ~1–2 s de latence par requête.</li>
+      </ul>
+    </section>
+
+    <footer class="m-footer">
+      <a href="/" class="back-link">← Retour à la recherche</a>
+    </footer>
+
+  </main>
+
+</body>
+</html>

@@ -1,0 +1,366 @@
+/* ── Navigation ── */
+.back-link {
+  display: inline-block;
+  margin-top: 18px;
+  font-size: 0.82rem;
+  font-family: system-ui, sans-serif;
+  color: var(--accent);
+  text-decoration: none;
+  letter-spacing: 0.04em;
+}
+.back-link:hover { text-decoration: underline; }
+
+/* ── Sections ── */
+.m-section {
+  margin-bottom: 60px;
+}
+
+.m-section h2 {
+  font-size: 1.25rem;
+  font-weight: normal;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+.m-section h2::before {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 28px;
+  height: 1px;
+  background: var(--accent);
+}
+
+.m-section h3 {
+  font-size: 0.92rem;
+  font-weight: normal;
+  font-family: system-ui, sans-serif;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 28px 0 12px;
+}
+
+.m-section p {
+  font-size: 0.96rem;
+  line-height: 1.75;
+  color: #3a3832;
+  margin-bottom: 14px;
+}
+
+.m-note {
+  font-size: 0.84rem !important;
+  font-family: system-ui, sans-serif;
+  color: var(--muted) !important;
+  font-style: italic;
+  margin-top: 10px;
+}
+
+/* ── Examples grid ── */
+.example-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 20px;
+}
+@media (max-width: 560px) { .example-grid { grid-template-columns: 1fr 1fr; } }
+
+.example-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+}
+.ex-label {
+  font-size: 0.66rem !important;
+  font-family: system-ui, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted) !important;
+  margin-bottom: 6px !important;
+}
+.ex-text {
+  font-size: 0.92rem !important;
+  color: var(--text) !important;
+  margin: 0 !important;
+}
+.ex-target {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* ── Table ── */
+.m-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: system-ui, sans-serif;
+  font-size: 0.88rem;
+  margin-bottom: 8px;
+}
+.m-table th {
+  text-align: left;
+  padding: 8px 12px;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border-bottom: 1px solid var(--border);
+}
+.m-table td {
+  padding: 9px 12px;
+  color: #3a3832;
+  border-bottom: 1px solid var(--border);
+}
+.m-table tr:last-child td { border-bottom: none; }
+.row-best td {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* ── Steps list ── */
+.m-steps {
+  padding-left: 20px;
+  margin: 12px 0;
+}
+.m-steps li {
+  font-size: 0.94rem;
+  line-height: 1.7;
+  color: #3a3832;
+  margin-bottom: 4px;
+}
+
+/* ── Pipeline vizualisation ── */
+.pipeline-viz {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 20px 0;
+  font-family: system-ui, sans-serif;
+  font-size: 0.88rem;
+}
+.pv-step {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 6px 14px;
+  color: #3a3832;
+}
+.pv-final {
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 600;
+}
+.pv-arrow { color: var(--muted); }
+
+/* ── Method cards ── */
+.method-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  margin-top: 16px;
+}
+@media (max-width: 600px) { .method-grid { grid-template-columns: 1fr; } }
+
+.method-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+}
+.method-status {
+  font-size: 0.62rem !important;
+  font-family: system-ui, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 6px !important;
+  color: var(--muted) !important;
+}
+.method-name {
+  font-size: 0.96rem !important;
+  font-weight: 600;
+  margin-bottom: 8px !important;
+  color: var(--text) !important;
+}
+.method-desc {
+  font-size: 0.84rem !important;
+  font-family: system-ui, sans-serif;
+  line-height: 1.55 !important;
+  color: var(--muted) !important;
+  margin: 0 !important;
+}
+.method-kept { border-color: rgba(61,107,79,0.3); background: rgba(61,107,79,0.03); }
+.method-best { border-color: var(--accent); background: rgba(61,107,79,0.06); }
+.method-best .method-status { color: var(--accent) !important; }
+.method-dropped { opacity: 0.7; }
+
+/* ── Bar chart ── */
+.bar-chart {
+  margin: 16px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.bar-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.bar-label {
+  font-family: system-ui, sans-serif;
+  font-size: 0.82rem;
+  color: #3a3832;
+  width: 180px;
+  flex-shrink: 0;
+}
+.bar-track {
+  flex: 1;
+  background: var(--surface2);
+  border-radius: 3px;
+  height: 22px;
+  overflow: hidden;
+}
+.bar-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 8px;
+  font-family: system-ui, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #fff;
+  transition: width 0.4s ease;
+}
+.bar-weak { background: rgba(61,107,79,0.5); }
+
+/* ── Pipeline steps ── */
+.pipeline-steps {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+  margin-top: 16px;
+}
+.ps-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  width: 100%;
+}
+.ps-final {
+  border-color: var(--accent);
+  background: rgba(61,107,79,0.04);
+}
+.ps-parallel {
+  border-top: none;
+  border-radius: 0 0 var(--radius) var(--radius);
+}
+.ps-step + .ps-step:not(.ps-parallel) { margin-top: 0; border-top: none; border-radius: 0; }
+.ps-step:first-child { border-radius: var(--radius) var(--radius) 0 0; }
+.ps-step:last-child { border-radius: 0 0 var(--radius) var(--radius); }
+
+.ps-num {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-family: system-ui, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.ps-title {
+  font-size: 0.94rem !important;
+  font-weight: 600;
+  color: var(--text) !important;
+  margin-bottom: 3px !important;
+}
+.ps-desc {
+  font-size: 0.83rem !important;
+  font-family: system-ui, sans-serif;
+  color: var(--muted) !important;
+  margin: 0 !important;
+  line-height: 1.5 !important;
+}
+.ps-arrow {
+  font-family: system-ui, sans-serif;
+  font-size: 0.78rem;
+  color: var(--muted);
+  padding: 4px 0 4px 40px;
+}
+
+/* ── Enrichissements ── */
+.enrich-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 16px;
+}
+@media (max-width: 500px) { .enrich-grid { grid-template-columns: 1fr; } }
+
+.enrich-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+}
+.enrich-title {
+  font-size: 0.88rem !important;
+  font-weight: 600;
+  color: var(--text) !important;
+  margin-bottom: 6px !important;
+}
+.enrich-desc {
+  font-size: 0.83rem !important;
+  font-family: system-ui, sans-serif;
+  color: var(--muted) !important;
+  line-height: 1.55 !important;
+  margin: 0 !important;
+}
+
+/* ── Listes ── */
+.m-list {
+  padding-left: 20px;
+  margin-top: 10px;
+}
+.m-list li {
+  font-size: 0.94rem;
+  line-height: 1.75;
+  color: #3a3832;
+  margin-bottom: 6px;
+  font-family: system-ui, sans-serif;
+}
+
+/* ── Badges ── */
+.badge-random {
+  font-size: 0.65rem;
+  font-family: monospace;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  padding: 2px 7px;
+  border-radius: 3px;
+  color: var(--muted);
+  vertical-align: middle;
+  margin-left: 6px;
+}
+
+/* ── Footer ── */
+.m-footer {
+  border-top: 1px solid var(--border);
+  padding-top: 32px;
+  margin-top: 20px;
+}

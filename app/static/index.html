@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Origine des noms</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+
+  <main>
+    <header>
+      <div class="header-rule"></div>
+      <h1>Origine des noms</h1>
+      <p class="subtitle">Étymologie et histoire de votre nom de famille et de votre prénom.</p>
+      <a href="/methode" class="methode-link">Méthodologie →</a>
+    </header>
+
+    <form id="form">
+      <div class="fields">
+        <div class="field">
+          <label for="prenom">Prénom</label>
+          <input id="prenom" type="text" placeholder="ex. Jean" autocomplete="off" spellcheck="false" />
+        </div>
+        <div class="field">
+          <label for="nom">Nom de famille</label>
+          <input id="nom" type="text" placeholder="ex. Dupont" autocomplete="off" spellcheck="false" />
+        </div>
+      </div>
+      <div class="form-footer">
+        <button type="submit">Rechercher</button>
+      </div>
+    </form>
+
+    <section id="results" hidden></section>
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+fastapi==0.117.1
+uvicorn==0.40.0
+httpx
+python-dotenv
+scikit-learn==1.8.0
+numpy
+Levenshtein==0.27.3
+Metaphone==0.6
+watchfiles

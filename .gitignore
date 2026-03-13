@@ -1,0 +1,13 @@
+.env
+__pycache__/
+*.pyc
+*.pyo
+.claude/
+point.md
+
+# Fichiers intermédiaires de scraping/traduction
+noms_originenom.json
+noms_originenom_checkpoint.json
+origins_noms_originenom.json
+origins_prenoms.json
+prenoms_checkpoint.json
