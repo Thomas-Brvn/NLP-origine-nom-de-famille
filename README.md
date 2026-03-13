@@ -37,3 +37,5 @@ L'application est accessible sur http://localhost:8000.
 La page `/methode` du site decrit le pipeline complet, les methodes testees et les resultats des benchmarks.
 
 ![Methodologie](methodologie.png)
+
+![Page_accueil](origine_nom_page_accueil.jpg)
