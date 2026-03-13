@@ -38,4 +38,6 @@ La page `/methode` du site decrit le pipeline complet, les methodes testees et l
 
 ![Methodologie](methodologie.png)
 
+## Page d'accueil
+
 ![Page_accueil](origine_nom_page_accueil.jpg)
